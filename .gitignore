@@ -1,0 +1,8 @@
+# pycharm配置文件
+.idea/
+# python字节码
+__pycache__/
+# 虚拟环境存放在项目目录的同级文件夹
+.online_learning/
+# 项目中用到的密码，如mysql数据库密码
+passwd.ini
