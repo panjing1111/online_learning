@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 
+
 # Create your models here.
 
 # 城市字典
@@ -14,6 +15,9 @@ class CityDict(models.Model):
     class Meta:
         verbose_name = "城市"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return "城市: {0}".format(self.name)
 
 
 # 课程机构
@@ -37,6 +41,10 @@ class CourseOrg(models.Model):
         verbose_name = "课程机构"
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return "课程机构: {0}".format(self.name)
+
+
 # 讲师
 class Teacher(models.Model):
     # 一个机构会有很多老师，所以我们在讲师表添加外键并把课程机构名称保存下来
@@ -54,3 +62,6 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = "教师"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return "[{0}]的教师: {1}".format(self.org, self.name)
