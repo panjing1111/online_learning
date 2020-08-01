@@ -17,6 +17,7 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0,os.path.join(BASE_DIR, 'extra_apps'))
 passwd = configparser.ConfigParser()
 passwd.read(os.path.join(BASE_DIR, 'passwd.ini'))
 
@@ -45,6 +46,9 @@ INSTALLED_APPS = [
     'courses',
     'organization',
     'operation',
+    'xadmin',
+    'crispy_forms'
+
 ]
 # 此处重载是为了使UserProfile生效
 AUTH_USER_MODEL = "users.UserProfile"
