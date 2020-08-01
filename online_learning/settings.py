@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'courses',
-    'organization'
+    'organization',
+    'operation',
 ]
 # 此处重载是为了使UserProfile生效
 AUTH_USER_MODEL = "users.UserProfile"
