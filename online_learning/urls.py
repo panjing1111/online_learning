@@ -13,14 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import TemplateView
+from users.views import LoginView
 
 import xadmin
 
 urlpatterns = [
     path('admin/', xadmin.site.urls),
     # TemplateView.as_view会将template转换为view
-    path('', TemplateView.as_view(template_name="index.html"), name="index"),
-    path('login/', TemplateView.as_view(template_name="login.html"), name="login")
+    path('', TemplateView.as_view(template_name='index.html'), name="index"),
+    path('login/', LoginView.as_view(), name="login")
+    # 将主路由和子路由绑定
+    # path('users/', include('users.urls')),  # 已经匹配到了users这个位置
 ]
