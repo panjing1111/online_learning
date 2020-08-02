@@ -1,6 +1,6 @@
 # encoding: utf-8
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -22,7 +22,7 @@ class LoginView(View):
         # 如果验证成功，才校验用户的账号密码是否正确
         if login_form.is_valid():
             user_name = login_form.cleaned_data['username']
-            pass_word = login_form.cleaned_data['passwoed']
+            pass_word = login_form.cleaned_data['password']
 
             # auth自带的验证用户的方法
             user = authenticate(username=user_name, password=pass_word)
@@ -41,3 +41,11 @@ class LoginView(View):
             # 表单验证失败 可能是密码不符合required=True, min_length=6
             error_msg = {"login_form": login_form}
             return render(request, "login.html", error_msg)
+
+
+class LogoutView(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        # 从request中获取访问当前视图的url，也就是说，退出后重新刷新下当前页面
+        current_url = request.META['HTTP_REFERER']
+        return HttpResponseRedirect(current_url)

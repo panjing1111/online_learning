@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path, include
 from django.views.generic import TemplateView
-from users.views import LoginView
+from users.views import LoginView, LogoutView
 
 import xadmin
 
@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', xadmin.site.urls),
     # TemplateView.as_view会将template转换为view
     path('', TemplateView.as_view(template_name='index.html'), name="index"),
-    path('login/', LoginView.as_view(), name="login")
+    path('login/', LoginView.as_view(), name="login"),
+    path('logout/', LogoutView.as_view(), name="logout"),
     # 将主路由和子路由绑定
     # path('users/', include('users.urls')),  # 已经匹配到了users这个位置
 ]
