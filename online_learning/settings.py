@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'organization',
     'operation',
     'xadmin',
-    'crispy_forms'
-
+    'crispy_forms',
+    'captcha',
 ]
 # 此处重载是为了使UserProfile生效
 AUTH_USER_MODEL = "users.UserProfile"

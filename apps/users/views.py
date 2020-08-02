@@ -5,7 +5,7 @@ from django.views.generic.base import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from users.forms import LoginForm
+from users.forms import LoginForm, RegisterForm
 
 
 class LoginView(View):
@@ -49,3 +49,9 @@ class LogoutView(View):
         # 从request中获取访问当前视图的url，也就是说，退出后重新刷新下当前页面
         current_url = request.META['HTTP_REFERER']
         return HttpResponseRedirect(current_url)
+
+class RegisterView(View):
+    def get(self, request, *args, **kwargs):
+        # 访问注册界面，需要返回图片验证码
+        register_form = RegisterForm()
+        return render(request, "register.html", {'register_form': register_form})
