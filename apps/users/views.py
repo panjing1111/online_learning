@@ -12,15 +12,17 @@ class LoginView(View):
     '''用户登录'''
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('index'))
         return render(request, 'login.html', {'msg': ''})
 
     def post(self, request, *args, **kwargs):
         # 使用LoginForm验证从表单提交的信息是否符合LoginForm中的规定
-        login_form = LoginForm(request.POST)
+        login_form  = LoginForm(request.POST)
         # 如果验证成功，才校验用户的账号密码是否正确
         if login_form.is_valid():
-            user_name = request.POST.get('username', "")
-            pass_word = request.POST.get("password", "")
+            user_name = login_form.cleaned_data['username']
+            pass_word = login_form.cleaned_data['passwoed']
 
             # auth自带的验证用户的方法
             user = authenticate(username=user_name, password=pass_word)
