@@ -78,8 +78,6 @@ class RegisterView(View):
             user_profile.username = user_name
             user_profile.email = user_email
             user_profile.password = make_password(pass_word) # 密码加密
-            # 默认激活状态为false
-            user_profile.is_active = False
             # 发送注册激活邮件
             send_email_result = send_register_email(user_email, "register")
             if send_email_result:
