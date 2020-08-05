@@ -1,4 +1,5 @@
 # encoding: utf-8
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import View
@@ -6,7 +7,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from users.forms import LoginForm, RegisterForm
-
+from users.models import UserProfile, EmailVerifyRecord
+from utils.email_send import send_register_email
 
 class LoginView(View):
     '''用户登录'''
@@ -55,3 +57,37 @@ class RegisterView(View):
         # 访问注册界面，需要返回图片验证码
         register_form = RegisterForm()
         return render(request, "register.html", {'register_form': register_form})
+
+    def post(self, request):
+        # 实例化form
+        register_form = RegisterForm(request.POST)
+        if register_form.is_valid():
+
+            user_name = register_form.cleaned_data["username"]
+            # user_name是唯一的，因此可以用username查询是否新用户
+            if UserProfile.objects.filter(username=user_name):
+                return render(request, "register.html", {"register_form": register_form, "msg": "用户名已经被使用"})
+
+            user_email = register_form.cleaned_data["email"]
+            if UserProfile.objects.filter(email=user_email):
+                return render(request, "register.html", {"register_form": register_form, "msg": "邮箱已被注册过"})
+
+            pass_word = register_form.cleaned_data["password"]
+            # 实例化一个user_profile对象，将前台值存入
+            user_profile = UserProfile()
+            user_profile.username = user_name
+            user_profile.email = user_email
+            user_profile.password = make_password(pass_word) # 密码加密
+            # 默认激活状态为false
+            user_profile.is_active = False
+            # 发送注册激活邮件
+            send_email_result = send_register_email(user_email, "register")
+            if send_email_result:
+                user_profile.save()
+
+            # 跳转到登录页面
+            return render(request, "index.html", )
+        # 注册邮箱form验证失败
+        else:
+            return render(request, "register.html", {"register_form": register_form})
+
