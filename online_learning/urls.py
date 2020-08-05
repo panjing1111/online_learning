@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
+
+from organization.views import OrgView
 from users.views import LoginView, LogoutView, RegisterView, ForgetPwdView, ResetView, ModifyPwdView
 
 import xadmin
@@ -36,4 +38,8 @@ urlpatterns = [
     re_path('reset/(?P<active_code>.*)/?', ResetView.as_view(), name="reset_pwd"),
     # 修改密码url; 用于passwordreset页面提交表单
     path('modify_pwd/', ModifyPwdView.as_view(), name="modify_pwd"),
+
+    # 课程机构首页url
+    path('org_list/', OrgView.as_view(), name="org_list"),
+
 ]
