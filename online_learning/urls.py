@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-from users.views import LoginView, LogoutView, RegisterView, ActiveUserView
+from users.views import LoginView, LogoutView, RegisterView, ForgetPwdView, ResetView, ModifyPwdView
 
 import xadmin
 
@@ -28,8 +28,12 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('register/', RegisterView.as_view(), name="register"),
-    # re_path('active/?P<active_dode.*>/', ActiveUserView.as_view(), name='user_active')
-    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name= "user_active")
     # 将主路由和子路由绑定
     # path('users/', include('users.urls')),  # 已经匹配到了users这个位置
+    # 忘记密码
+    path('forget/', ForgetPwdView.as_view(), name="forget_pwd"),
+    # 重置密码
+    re_path('reset/(?P<active_code>.*)/?', ResetView.as_view(), name="reset_pwd"),
+    # 修改密码url; 用于passwordreset页面提交表单
+    path('modify_pwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 ]

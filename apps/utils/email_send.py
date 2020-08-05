@@ -49,5 +49,21 @@ def send_register_email(email, send_type="register"):
             return True
         else:
             return False
+    elif send_type == "forget":
+        email_title = "django - 找回密码链接"
+        email_body = loader.render_to_string(
+            "email_forget.html",  # 需要渲染的html模板
+            {
+                "active_code": code  # 参数
+            }
+        )
+        msg = EmailMessage(email_title, email_body, DEFAULT_FROM_EMAIL, [email])
+        msg.content_subtype = "html"
+        send_status = msg.send()
+        # 如果发送成功
+        if send_status:
+            return True
+        else:
+            return False
     else:
         return False
