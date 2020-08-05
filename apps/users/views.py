@@ -119,9 +119,9 @@ class ForgetPwdView(View):
         else:
             return render(request, "forgetpwd.html", {"forget_from": forget_form })
 
-# 重置密码的view
+# 重置密码的view  由于重置密码的时候携带active_code，将ResetView与ModifyPwdView分开写
 class ResetView(View):
-    '''用户邮箱会收到一个链接、打开这个链接执行重置密码的功能'''
+    '''用户邮箱会收到一个链接、打开这个链接输入新密码'''
     def get(self, request, active_code):
         # 查询邮箱验证记录是否存在
         all_record = EmailVerifyRecord.objects.filter(code=active_code)
@@ -133,7 +133,7 @@ class ResetView(View):
                 email = record.email
                 # 将email传回来
                 return render(request, "password_reset.html", {"email":email})
-        # 自己瞎输的验证码
+        # 自己瞎输的active_code
         else:
             return render(
                 request, "forgetpwd.html", {
