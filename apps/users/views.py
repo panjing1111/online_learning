@@ -82,7 +82,8 @@ class RegisterView(View):
             send_email_result = send_register_email(user_email, "register")
             if send_email_result:
                 user_profile.save()
-
+            # 注册完成后登录
+            login(request, user_profile)  # 将用户信息添加到session中
             # 跳转到登录页面
             return render(request, "index.html", )
         # 注册邮箱form验证失败
